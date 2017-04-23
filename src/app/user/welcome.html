@@ -1,0 +1,11 @@
+<div *ngIf="authenticationService.authenticated() && getUserProfile(); else loading">
+    <user-sideBar></user-sideBar>
+</div>
+
+<router-outlet></router-outlet>
+
+<ng-template #loading>
+    <div style="text-align: center">
+        <img src="/assets/images/load1.gif">
+    </div>
+</ng-template>

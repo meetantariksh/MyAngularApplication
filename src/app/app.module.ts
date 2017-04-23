@@ -1,20 +1,33 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { Error404Component } from './error/error404.component';
+
+import { ApplicationRoutes } from './appRouting/routing.component';
+import { ErrorRoutes } from './error/errorRouting.component';
+
+import { CoreModule } from './coreModule/core.module';
+
+import { AuthGuard } from './security/authGaurd.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    Error404Component
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    HttpModule
+    CoreModule,
+    ApplicationRoutes,
+    //Keep this at last.
+    ErrorRoutes
   ],
-  providers: [],
+  providers:[
+    AuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

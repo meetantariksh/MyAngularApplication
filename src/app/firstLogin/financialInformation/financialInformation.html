@@ -1,0 +1,150 @@
+<div style="height: 686px;overflow: auto;margin-left: 5%; margin-right: 5%; margin-top: 2%; margin-bottom: 2%; background-color: #efefef;padding: 2%; border-radius: 15px">
+
+    <form class="form-horizontal" [formGroup]="financilaInformationForm" (ngSubmit)="onSubmit()" novalidate>
+    <fieldset>
+        <legend>Financial Information</legend>
+        <div class="form-group">
+            <label for="occupationType" class="col-lg-2 control-label">Occupation Type</label>
+            <div class="col-lg-10">
+                <select class="form-control" id="occupationType" formControlName="occupationType">
+                    <option value="Profession">Profession</option>
+                    <option value="Employment">Employment</option>
+                    <option value="Business">Business</option>
+                </select>
+            </div>
+            <div *ngIf="formErrors.occupationType" class="alert alert-danger">
+            {{ formErrors.occupationType }}
+            </div>
+        </div>
+
+        <div *ngIf="formDescriptions.occupationType" class="alert alert-dismissible alert-info">
+            {{ formDescriptions.occupationType }}
+        </div>
+
+        <div class="form-group">
+            <label for="yearlyIncome" class="col-lg-2 control-label">Yearly Income</label>
+            <div class="col-lg-10">
+                <input type="number" class="form-control" id="yearlyIncome" formControlName="yearlyIncome" placeholder="123456" required>
+            </div>
+            <div *ngIf="formErrors.yearlyIncome" class="alert alert-danger">
+            {{ formErrors.yearlyIncome }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="monthlyExpenditure" class="col-lg-2 control-label">Monthly Expenditure</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="monthlyExpenditure" formControlName="monthlyExpenditure" placeholder="123456" required>
+            </div>
+            <div *ngIf="formErrors.monthlyExpenditure" class="alert alert-danger">
+            {{ formErrors.monthlyExpenditure }}
+            </div>
+        </div>
+        
+        <div class="form-group">
+        <label class="col-lg-2 control-label">Do you have any Static Investments Made? (Static investments include all your one time investments such as property, ontime Mutual Funds, Fixed Deposits etc.)</label>
+            <div class="col-lg-10">
+                <div class="radio">
+                <label>
+                    <input type="radio" name="isStaticInvestment" id="optionsRadios1" value="true" formControlName="isStaticInvestment">
+                    Yes
+                </label>
+                </div>
+                <div class="radio">
+                <label>
+                    <input type="radio" name="isStaticInvestment" id="optionsRadios2" value="false" checked="checked" formControlName="isStaticInvestment">
+                    No
+                </label>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="financilaInformationForm.value.isStaticInvestment == 'true'">
+            <div formArrayName="staticInvestmentList">
+                <div *ngFor="let staticInvestment of staticInvestmentList.controls; let i=index" [formGroupName]="static-i" >
+                    <h4>Static Investment #{{i+1}}</h4>
+                    <div class="form-group">
+                        <label for="staticInvestmentType" class="col-lg-2 control-label">Static Investment Type</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" id="staticInvestmentType" formControlName="staticInvestmentType" placeholder="Property" required>
+                        </div>
+                        <div *ngIf="formErrors.staticInvestmentType" class="alert alert-danger">
+                        {{ formErrors.staticInvestmentType }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="staticInvestmentAmmount" class="col-lg-2 control-label">Static Investment Ammount</label>
+                        <div class="col-lg-10">
+                            <input type="number" class="form-control" id="staticInvestmentAmmount" formControlName="staticInvestmentAmmount" placeholder="12345" required>
+                        </div>
+                        <div *ngIf="formErrors.staticInvestmentAmmount" class="alert alert-danger">
+                        {{ formErrors.staticInvestmentAmmount }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <a (click)="addStaticInvestment()" class="btn btn-primary">Add Static Investment</a>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label">Do you have any Periodic Investments Made? (Periodic investments include all investments such as SIPs, Reccuring Deposits, Insurance Premiums etc)</label>
+            <div class="col-lg-10">
+                    <div class="radio">
+                    <label>
+                        <input type="radio" name="isPeriodicInvestment" id="optionsRadios1" value="true" formControlName="isPeriodicInvestment">
+                        Yes
+                    </label>
+                    </div>
+                    <div class="radio">
+                    <label>
+                        <input type="radio" name="isPeriodicInvestment" id="optionsRadios2" value="false" checked="checked" formControlName="isPeriodicInvestment">
+                        No
+                    </label>
+                    </div>
+            </div>
+        </div>
+
+         <div *ngIf="financilaInformationForm.value.isPeriodicInvestment == 'true'">
+            <div formArrayName="periodicInvestmentList">
+                <div *ngFor="let periodicInvestment of periodicInvestmentList.controls; let i=index" [formGroupName]="periodic-i" >
+                    <h4>Periodic Investment #{{i+1}}</h4>
+                    <div class="form-group">
+                        <label for="periodicInvestmentType" class="col-lg-2 control-label">Periodic Investment Type</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" id="periodicInvestmentType" formControlName="periodicInvestmentType" placeholder="Property" required>
+                        </div>
+                        <div *ngIf="formErrors.periodicInvestmentType" class="alert alert-danger">
+                        {{ formErrors.periodicInvestmentType }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="periodicInvestmentAmmount" class="col-lg-2 control-label">Periodic Investment Ammount</label>
+                        <div class="col-lg-10">
+                            <input type="number" class="form-control" id="periodicInvestmentAmmount" formControlName="periodicInvestmentAmmount" placeholder="12345" required>
+                        </div>
+                        <div *ngIf="formErrors.periodicInvestmentAmmount" class="alert alert-danger">
+                        {{ formErrors.periodicInvestmentAmmount }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a (click)="addPeriodicInvestment()" class="btn btn-primary">Add Periodic Investment</a>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+                <button [disabled]="!financilaInformationForm.valid" type="submit" class="btn btn-primary">Continue</button>
+            </div>
+        </div>
+
+    </fieldset>
+    </form>
+
+</div>
