@@ -17,7 +17,7 @@ var options = {
     },
     languageDictionary: {
       title: "Lets Begin.."
-  },
+    },
 };
 
 @Injectable()
@@ -40,6 +40,7 @@ export class Auth{
   }
 
   public login() {
+    this.router.navigate(['/home']);
     this.lock.show();
   }
 
