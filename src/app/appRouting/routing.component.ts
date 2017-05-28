@@ -21,6 +21,10 @@ const applicationRoutes: Routes = [
         canLoad: [AuthGuard]
     },
     {
+        path: 'aboutUs',
+        loadChildren: 'app/sharedModule/shared.module#SharedModule',
+    },
+    {
         path: '',
         redirectTo: '/home',
         pathMatch: 'full'
