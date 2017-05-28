@@ -1,0 +1,593 @@
+<div *ngIf="financialInformation && userProfile; else loading">
+    <div>
+        <h3>Financial Information of <u><b>{{userProfile.lastName}}, {{userProfile.firstName}}</b></u></h3>
+    </div>
+    <br>
+    <div style="margin-right: 2%">
+        <blockquote class="blockquote-reverse">
+            <p>Someone's sitting in a shade today because someone planted a tree a long time ago.</p>
+            <small>Warren Buffett</small>
+        </blockquote>
+    </div>
+
+    <br>
+    <br>
+
+    <div style="text-align: center; width: 60%; margin: 0 auto;">
+        <h4><u><b>Your Financial Summary</b></u></h4>
+        <br>
+        <div style="display: block; width: 40%; margin: 0 auto">
+            <canvas baseChart
+                    [data]="pieChartData"
+                    [labels]="pieChartLabels"
+                    [chartType]="pieChartType"
+                    [options]="pieChartOptions"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)">
+            </canvas>
+        </div>
+
+        <table class="table table-striped table-hover ">
+            <thead>
+                <tr>
+                    <th style="text-align: center;">Entity</th>
+                    <th style="text-align: center;">Value</th>
+                    <th style="text-align: center;">Entity Type</th>
+                    <th style="text-align: center;">Asset/Libility</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Monthly Income</td>
+                    <td>{{monthlyIncome}}</td>
+                    <td>Income</td>
+                    <td>Asset</td>
+                </tr>
+                <tr *ngFor="let sI of staticInvestments">
+                    <td>{{sI.staticInvestmentType}}</td>
+                    <td>{{sI.staticInvestmentAmmount}}</td>
+                    <td>Static Investment</td>
+                    <td>Growing Asset</td>
+                </tr>
+                <tr *ngFor="let pI of periodicInvestments">
+                    <td>{{pI.periodicInvestmentType}}</td>
+                    <td>{{pI.periodicInvestmentAmmount}}</td>
+                    <td>Periodic Investment</td>
+                    <td>Growing Asset</td>
+                </tr>
+                <tr>
+                    <td>Accumulating Liquid Asset</td>
+                    <td>{{leftAsset}}</td>
+                    <td>Liquid Asset</td>
+                    <td>Stagnent Asset</td>
+                </tr>
+                <tr>
+                    <td>Expenditure</td>
+                    <td>{{financialInformation.monthlyExpenditure}}</td>
+                    <td>Outgoing Expences</td>
+                    <td>Libility</td>
+                </tr>
+                <tr *ngIf="taxInfoBeforeTaxsavings && taxInfoBeforeTaxsavings.istaxApplicable">
+                    <td>Income Tax</td>
+                    <td>{{taxPerMonth}}</td>
+                    <td>Outgoing Expences</td>
+                    <td>Forced Libility</td>
+                </tr>
+                <tr *ngIf="taxInfoBeforeTaxsavings && taxInfoBeforeTaxsavings.isProfessionalTaxReq">
+                    <td>Professional Tax</td>
+                    <td>150</td>
+                    <td>Outgoing Expences</td>
+                    <td>Forced Libility</td>
+                </tr>
+            </tbody>
+        </table> 
+    </div>
+    <br>
+    <br>
+        <div style="text-align: center; width: 100%; margin: 0 auto;">
+                <h4><u><b>Your Savings</b></u></h4>
+                <br>
+                <div style="display: flex">
+                            <div style="display: block; width: 25%; margin: 0 auto">
+                                <canvas baseChart
+                                            [data]="doughnutChartData"
+                                            [labels]="doughnutChartLabels"
+                                            [chartType]="doughnutChartType"
+                                            [options]="doughnutChartOptions"
+                                            (chartHover)="chartHovered($event)"
+                                            (chartClick)="chartClicked($event)">
+                                </canvas>
+                                <div style="display: block; width: 100%; margin: 0 auto">
+                                    <table class="table table-striped table-hover ">
+                                        <thead>
+                                            <tr>
+                                            <th style="text-align: center;">Periodic Investment Type</th>
+                                            <th style="text-align: center;">Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let periodicIns of financialInformation.periodicInvestmentList">
+                                                <td>{{periodicIns.periodicInvestmentType}}</td>
+                                                <td>{{periodicIns.periodicInvestmentAmmount}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div style="display: block; width: 25%; margin: 0 auto">
+                                <canvas baseChart
+                                        [data]="polarAreaChartData"
+                                        [labels]="polarAreaChartLabels"
+                                        [legend]="polarAreaLegend"
+                                        [chartType]="polarAreaChartType"
+                                        [options]="polarAreaChartOptions"
+                                        (chartHover)="chartHovered($event)"
+                                        (chartClick)="chartClicked($event)">
+                                </canvas>
+                                <div style="display: block; width: 100%; margin: 0 auto">
+                                    <table class="table table-striped table-hover ">
+                                        <thead>
+                                            <tr>
+                                            <th style="text-align: center;">Static Investment Type</th>
+                                            <th style="text-align: center;">Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let staticIns of staticInvestments">
+                                                <td>{{staticIns.staticInvestmentType}}</td>
+                                                <td>{{staticIns.staticInvestmentAmmount}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                    <div style="text-align: center; width: 80%; margin: 0 auto;">
+                        <h4><u><b>Your Total Yearly Savings</b></u></h4>
+                        <br>
+                        <div style="display: block; width: 30%; margin: 0 auto">
+                            <canvas baseChart
+                                    [data]="pieChartDataTotalYearlySavings"
+                                    [labels]="pieChartLabelsTotalYearlySavings"
+                                    [chartType]="pieChartTypeTotalYearlySavings"
+                                    [options]="pieChartOptionsTotalYearlySavings"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)">
+                            </canvas>
+                        </div>
+                            <table class="table table-striped table-hover ">
+                                        <thead>
+                                            <tr>
+                                            <th style="text-align: center;">Investment Type</th>
+                                            <th style="text-align: center;">Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let periodicIns of financialInformation.periodicInvestmentList">
+                                                <td>{{periodicIns.periodicInvestmentType}}</td>
+                                                <td>{{periodicIns.periodicInvestmentAmmount*12}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Accumulating Liquid Asset</td>
+                                                <td>{{leftAsset*12}}</td>
+                                            </tr>
+                                            <tr *ngIf="financialInformation.investmentsUnder80C && 0 != financialInformation.investmentsUnder80C">
+                                                <td>Investments Under 80 C</td>
+                                                <td>{{financialInformation.investmentsUnder80C}}</td>
+                                            </tr>
+                                        </tbody>
+                            </table>
+                    </div>
+            </div>
+            <br>
+            <br>
+            <div style="text-align: center; width: 100%; margin: 0 auto;">
+                <h4><u><b>Optimum Savings vs. Your Savings vs. Bullish Savings</b></u></h4>
+                <br>
+
+                <div style="display: flex">
+                    <div style="display: block; width: 25%; margin: 0 auto">
+                        <div style="display: block; width: 100%; margin: 0 auto">
+                            <h5><u><b>Optimum Savings</b></u></h5>
+                            <table class="table table-striped table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">Entity</th>
+                                        <th style="text-align: center;">Value (In Percentage)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Savings</td>
+                                        <td>30 %</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Expenditure</td>
+                                        <td>50 %</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Liquid Asset</td>
+                                        <td>20 %</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <canvas baseChart
+                                    [datasets]="radarChartDataOptimum"
+                                    [labels]="radarChartLabelsOptimum"
+                                    [chartType]="radarChartTypeOptimum"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)">
+                        </canvas>
+
+                        <div style="display: block; width: 100%; margin: 0 auto">
+                            <h5><u><b>Your Savings</b></u></h5>
+                            <table class="table table-striped table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">Entity</th>
+                                        <th style="text-align: center;">Value (In Percentage)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Savings</td>
+                                        <td>{{totalSavingsPerMonthPercentage}} %</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Expenditure</td>
+                                        <td>{{expenditurePercentage}} %</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Liquid Asset</td>
+                                        <td>{{leftAssetPercentage}} %</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div style="display: block; width: 25%; margin: 0 auto">
+                        <div style="display: block; width: 100%; margin: 0 auto">
+                            <h5><u><b>Bullish Savings</b></u></h5>
+                            <table class="table table-striped table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">Entity</th>
+                                        <th style="text-align: center;">Value (In Percentage)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Savings</td>
+                                        <td>50 %</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Expenditure</td>
+                                        <td>40 %</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Liquid Asset</td>
+                                        <td>10 %</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <canvas baseChart
+                                    [datasets]="radarChartDataBullish"
+                                    [labels]="radarChartLabelsBullish"
+                                    [chartType]="radarChartTypeBullish"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)">
+                        </canvas>
+
+                        <div style="display: block; width: 100%; margin: 0 auto">
+                            <h5><u><b>Your Savings</b></u></h5>
+                            <table class="table table-striped table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">Entity</th>
+                                        <th style="text-align: center;">Value (In Percentage)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Savings</td>
+                                        <td>{{totalSavingsPerMonthPercentage}} %</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Expenditure</td>
+                                        <td>{{expenditurePercentage}} %</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Liquid Asset</td>
+                                        <td>{{leftAssetPercentage}} %</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <div class="alert alert-dismissible alert-info" style="width: 80%; margin: 0 auto">
+                    <strong>Your entity percentage in the above tables are calculated after deducting your forced expenditures (taxes) from your monthly income.</strong>
+                </div>
+
+                <div class="alert alert-dismissible alert-info" style="width: 80%; margin: 0 auto">
+                    <strong>Your Accumulating Liquid Asset ensures your financial stability. Liquid assest can be re-invested as a part of any static investment once its accumulation is high enough.</strong>
+                </div>
+            </div>
+
+            <br>
+            <br>
+             <div *ngIf="taxInfoAfterTaxsavings && taxInfoBeforeTaxsavings.isScopeOfTaxSavings && taxInfoBeforeTaxsavings.istaxApplicable" style="text-align: center; width: 100%; margin: 0 auto;">
+                <h4><u><b>Your Tax Details and Scope of Tax Savings</b></u></h4>
+                <br>
+
+                <div style="display: flex">
+                    <div style="display: block; width: 25%; margin: 0 auto">
+                        <div style="display: block; width: 100%; margin: 0 auto">
+                            <h5><u><b>Your Current Tax Details</b></u></h5>
+                            <table class="table table-striped table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">Entity</th>
+                                        <th style="text-align: center;">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Tax Percentage </td>
+                                        <td>{{taxInfoBeforeTaxsavings.taxPercent}} %</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Taxable Ammount</td>
+                                        <td>{{financialInformation.yearlyIncome}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Investments Under 80 C</td>
+                                        <td>{{financialInformation.investmentsUnder80C}}</td>
+                                    </tr>
+                                     <tr>
+                                        <td>Actual Taxable Ammount</td>
+                                        <td>{{taxInfoBeforeTaxsavings.actualTaxableAmmount}}</td>
+                                    </tr>
+                                    <tr *ngIf="taxInfoBeforeTaxsavings.isSurchageApplicable">
+                                        <td>Surcharge Percentage Applied</td>
+                                        <td>{{taxInfoBeforeTaxsavings.surChanrgePercent}} %</td>
+                                    </tr>
+                                    <tr *ngIf="taxInfoBeforeTaxsavings.isSurchageApplicable">
+                                        <td>Surcharge Ammount</td>
+                                        <td>{{taxInfoBeforeTaxsavings.surchargeAmmount}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cess Percentage</td>
+                                        <td>{{taxInfoBeforeTaxsavings.cessPercent}} %</td>
+                                    </tr>
+                                     <tr>
+                                        <td>Cess Ammount</td>
+                                        <td>{{taxInfoBeforeTaxsavings.cessAmmount}}</td>
+                                    </tr>
+                                    <tr *ngIf="taxInfoBeforeTaxsavings.isProfessionalTaxReq">
+                                        <td>Professional Tax</td>
+                                        <td>{{150*12}}</td>
+                                    </tr>
+                                     <tr *ngIf="taxInfoBeforeTaxsavings.isProfessionalTaxReq">
+                                        <td>Total Tax to be Paid(Inculding 150 Professional tax per month)</td>
+                                        <td>{{taxInfoBeforeTaxsavings.totalTaxPaid+(150*12)}}</td>
+                                    </tr>
+                                     <tr *ngIf="!taxInfoBeforeTaxsavings.isProfessionalTaxReq">
+                                        <td>Total Tax to be Paid</td>
+                                        <td>{{taxInfoBeforeTaxsavings.totalTaxPaid}}</td>
+                                    </tr>
+                                    <tr *ngIf="taxInfoBeforeTaxsavings.isProfessionalTaxReq">
+                                        <td>Total Tax to be Paid Per Month</td>
+                                        <td>{{taxInfoBeforeTaxsavings.totalTaxPaid/12+(150)}}</td>
+                                    </tr>
+                                     <tr *ngIf="!taxInfoBeforeTaxsavings.isProfessionalTaxReq">
+                                        <td>Total Tax to be Paid Per Month</td>
+                                        <td>{{taxInfoBeforeTaxsavings.totalTaxPaid/12}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <canvas baseChart
+                            [data]="pieChartData"
+                            [labels]="pieChartLabels"
+                            [chartType]="pieChartType"
+                            [options]="pieChartOptionsTaxInfo"
+                            (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)">
+                    </canvas>
+                    </div>
+
+                    <div style="display: block; width: 25%; margin: 0 auto">
+                        <div style="display: block; width: 100%; margin: 0 auto">
+                            <h5><u><b>Your Tax Details (After full tax savings)</b></u></h5>
+                            <table class="table table-striped table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">Entity</th>
+                                        <th style="text-align: center;">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="taxInfoAfterTaxsavings.istaxApplicable">
+                                    <tr>
+                                        <td>Tax Percentage </td>
+                                        <td>{{taxInfoAfterTaxsavings.taxPercent}} %</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Taxable Ammount</td>
+                                        <td>{{financialInformation.yearlyIncome}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Investments Under 80 C</td>
+                                        <td>150000</td>
+                                    </tr>
+                                     <tr>
+                                        <td>Actual Taxable Ammount</td>
+                                        <td>{{taxInfoAfterTaxsavings.actualTaxableAmmount}}</td>
+                                    </tr>
+                                    <tr *ngIf="taxInfoAfterTaxsavings.isSurchageApplicable">
+                                        <td>Surcharge Percentage Applied</td>
+                                        <td>{{taxInfoAfterTaxsavings.surChanrgePercent}} %</td>
+                                    </tr>
+                                    <tr *ngIf="taxInfoAfterTaxsavings.isSurchageApplicable">
+                                        <td>Surcharge Ammount</td>
+                                        <td>{{taxInfoAfterTaxsavings.surchargeAmmount}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cess Percentage</td>
+                                        <td>{{taxInfoAfterTaxsavings.cessPercent}} %</td>
+                                    </tr>
+                                     <tr>
+                                        <td>Cess Ammount</td>
+                                        <td>{{taxInfoAfterTaxsavings.cessAmmount}}</td>
+                                    </tr>
+                                    <tr *ngIf="taxInfoAfterTaxsavings.isProfessionalTaxReq">
+                                        <td>Professional Tax</td>
+                                        <td>{{150*12}}</td>
+                                    </tr>
+                                     <tr *ngIf="taxInfoAfterTaxsavings.isProfessionalTaxReq">
+                                        <td>Total Tax to be Paid(Inculding 150 Professional tax per month)</td>
+                                        <td>{{taxInfoAfterTaxsavings.totalTaxPaid+(150*12)}}</td>
+                                    </tr>
+                                     <tr *ngIf="!taxInfoAfterTaxsavings.isProfessionalTaxReq">
+                                        <td>Total Tax to be Paid</td>
+                                        <td>{{taxInfoAfterTaxsavings.totalTaxPaid}}</td>
+                                    </tr>
+                                    <tr *ngIf="taxInfoAfterTaxsavings.isProfessionalTaxReq">
+                                        <td>Total Tax to be Paid Per Month</td>
+                                        <td>{{taxInfoAfterTaxsavings.totalTaxPaid/12+(150)}}</td>
+                                    </tr>
+                                     <tr *ngIf="!taxInfoAfterTaxsavings.isProfessionalTaxReq">
+                                        <td>Total Tax to be Paid Per Month</td>
+                                        <td>{{taxInfoAfterTaxsavings.totalTaxPaid/12}}</td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="!taxInfoAfterTaxsavings.istaxApplicable">
+                                    <tr>
+                                        <td>Is Tax Applicable?</td>
+                                        <td>NO</td>
+                                    </tr>
+                                     <tr *ngIf="taxInfoAfterTaxsavings.isProfessionalTaxReq">
+                                        <td>Professional Tax</td>
+                                        <td>{{150*12}}</td>
+                                    </tr>
+                                     <tr *ngIf="taxInfoAfterTaxsavings.isProfessionalTaxReq">
+                                        <td>Total Tax to be Paid(Inculding 150 Professional tax per month)</td>
+                                        <td>{{(150*12)}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <canvas baseChart
+                            [data]="pieChartDataTaxInfoAfterSavings"
+                            [labels]="pieChartLabels"
+                            [chartType]="pieChartType"
+                            [options]="pieChartOptionsTaxInfoAfterSavings"
+                            (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)">
+                    </canvas>
+                    </div>
+                </div>
+                <br>
+                 <div class="alert alert-dismissible alert-info" style="width: 80%; margin: 0 auto">
+                    <strong>You can save upto <u>{{taxdifference/12}} per month or {{taxdifference}} per year</u> with proper tax savings.</strong>
+                </div>
+
+                <div class="alert alert-dismissible alert-info" style="width: 80%; margin: 0 auto">
+                    <strong>Plese note that the above charts does not include the proffetional tax if applicable.</strong>
+                </div>
+
+             </div>
+
+             <div *ngIf="!taxInfoBeforeTaxsavings.isScopeOfTaxSavings" style="text-align: center; width: 100%; margin: 0 auto;">
+                <h4><u><b>Your Tax Details</b></u></h4>
+
+                <div style="display: flex">
+                    <div style="display: block; width: 50%; margin: 0 auto">
+                        <div style="display: block; width: 100%; margin: 0 auto">
+                            <h5><u><b>Your Current Tax Details</b></u></h5>
+                            <table class="table table-striped table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">Entity</th>
+                                        <th style="text-align: center;">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Tax Percentage </td>
+                                        <td>{{taxInfoBeforeTaxsavings.taxPercent}} %</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Taxable Ammount</td>
+                                        <td>{{financialInformation.yearlyIncome}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Investments Under 80 C</td>
+                                        <td>{{financialInformation.investmentsUnder80C}}</td>
+                                    </tr>
+                                     <tr>
+                                        <td>Actual Taxable Ammount</td>
+                                        <td>{{taxInfoBeforeTaxsavings.actualTaxableAmmount}}</td>
+                                    </tr>
+                                    <tr *ngIf="taxInfoBeforeTaxsavings.isSurchageApplicable">
+                                        <td>Surcharge Percentage Applied</td>
+                                        <td>{{taxInfoBeforeTaxsavings.surChanrgePercent}} %</td>
+                                    </tr>
+                                    <tr *ngIf="taxInfoBeforeTaxsavings.isSurchageApplicable">
+                                        <td>Surcharge Ammount</td>
+                                        <td>{{taxInfoBeforeTaxsavings.surchargeAmmount}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cess Percentage</td>
+                                        <td>{{taxInfoBeforeTaxsavings.cessPercent}} %</td>
+                                    </tr>
+                                     <tr>
+                                        <td>Cess Ammount</td>
+                                        <td>{{taxInfoBeforeTaxsavings.cessAmmount}}</td>
+                                    </tr>
+                                    <tr *ngIf="taxInfoBeforeTaxsavings.isProfessionalTaxReq">
+                                        <td>Professional Tax</td>
+                                        <td>{{150*12}}</td>
+                                    </tr>
+                                     <tr *ngIf="taxInfoBeforeTaxsavings.isProfessionalTaxReq">
+                                        <td>Total Tax to be Paid(Inculding 150 Professional tax per month)</td>
+                                        <td>{{taxInfoBeforeTaxsavings.totalTaxPaid+(150*12)}}</td>
+                                    </tr>
+                                     <tr *ngIf="!taxInfoBeforeTaxsavings.isProfessionalTaxReq">
+                                        <td>Total Tax to be Paid</td>
+                                        <td>{{taxInfoBeforeTaxsavings.totalTaxPaid}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <canvas baseChart
+                            [data]="pieChartData"
+                            [labels]="pieChartLabels"
+                            [chartType]="pieChartType"
+                            [options]="pieChartOptionsTaxInfo"
+                            (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)">
+                    </canvas>
+                    </div>
+                </div>
+             </div>
+
+            <br>
+            <br>
+
+
+</div>
+
+<ng-template #loading>
+    <div style="text-align: center">
+        <img src="/assets/images/load2.gif">
+    </div>
+</ng-template>

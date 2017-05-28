@@ -1,21 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import {Http, Headers} from '@angular/http';
+
+import { StaticInvestment } from '../../beans/staticInvestment';
+import { PeriodicInvestment } from '../../beans/periodicInvestment';
+import { FianacialInformation } from '../../beans/financialInformation';
+import { UserProfile } from '../../beans/userProfile';
+import { Auth } from '../../coreModule/service/authentication.service';
+
+import 'rxjs/add/operator/toPromise';
 
 @Component({
     selector: 'financial-information',
     templateUrl: 'financialInformation.html'
 })
 
-export class FinancialInformationComponent{
+export class FinancialInformationComponent implements OnInit{
     financilaInformationForm: FormGroup;
+    userProfile: UserProfile;
+    staticInvestmentL: StaticInvestment[];
+    periodicInvestmentL: PeriodicInvestment[];
+    financialInformation: FianacialInformation;
+    validationErrorMessage: String;
+    processing: boolean = false;
 
     constructor(private formBuilder: FormBuilder,
-        private router: Router){
+        private router: Router,
+        private auth: Auth,
+        private http: Http){
             this.financilaInformationForm = this.formBuilder.group({
                 occupationType: ['',[Validators.required]],
                 yearlyIncome: ['',Validators.required],
                 monthlyExpenditure: ['', Validators.required],
+                investmentsUnder80C: [''],
                 isStaticInvestment: ['',Validators.required],
                 staticInvestmentList: this.formBuilder.array([]),
                 isPeriodicInvestment: ['',Validators.required],
@@ -99,12 +117,9 @@ export class FinancialInformationComponent{
         for (const field in this.formDescriptions) {
         this.formDescriptions[field] = '';
         const control = form.get(field);
-        console.log(control.value);
         if (control && control.dirty) {
                 const messages = this.descriptionMessages[field];
-                console.log(messages);
                 this.formDescriptions[field] += messages[control.value] + ' ';
-                console.log(this.formDescriptions[field]);
             }
         }
     }
@@ -165,6 +180,66 @@ export class FinancialInformationComponent{
   };
 
   onSubmit(){
+    this.processing = true;
+    var validationMonthly;
+    var validationPeriodic = 0;
+    this.financialInformation = new FianacialInformation('','',0,0,true,true);
+    this.staticInvestmentL = new Array<StaticInvestment>();
+    this.periodicInvestmentL = new Array<PeriodicInvestment>();
+    const financialInfoForm = this.financilaInformationForm.value;
+    this.financialInformation.occupationType = financialInfoForm.occupationType;
+    this.financialInformation.monthlyExpenditure = financialInfoForm.monthlyExpenditure;
+    this.financialInformation.yearlyIncome  = financialInfoForm.yearlyIncome;
+    if(financialInfoForm.investmentsUnder80C){
+        this.financialInformation.investmentsUnder80C = financialInfoForm.investmentsUnder80C;
+    }else{
+        this.financialInformation.investmentsUnder80C = 0;
+    }
+    validationMonthly = (financialInfoForm.yearlyIncome)/12;
+    this.financialInformation.isPeriodicInvestment = financialInfoForm.isPeriodicInvestment;
+    this.financialInformation.isStaticInvestment = financialInfoForm.isStaticInvestment;
+    if(financialInfoForm.isPeriodicInvestment){
+        if(financialInfoForm.periodicInvestmentList){
+            for(let prInvest of financialInfoForm.periodicInvestmentList){
+                this.periodicInvestmentL.push(new PeriodicInvestment(prInvest.periodicInvestmentType, prInvest.periodicInvestmentAmmount));
+                validationPeriodic = +validationPeriodic + +prInvest.periodicInvestmentAmmount;
+            }
+             this.financialInformation.periodicInvestmentList = this.periodicInvestmentL;
+        }
+    }
+    if(financialInfoForm.isStaticInvestment){
+        if(financialInfoForm.staticInvestmentList){
+            for(let stInvest of financialInfoForm.staticInvestmentList){
+                this.staticInvestmentL.push(new StaticInvestment(stInvest.staticInvestmentType, stInvest.staticInvestmentAmmount));
+            }
+             this.financialInformation.staticInvestmentList = this.staticInvestmentL;
+        }
+    }
+    this.financialInformation.userId = this.userProfile.userID;
+    if(validationMonthly<financialInfoForm.monthlyExpenditure){
+        this.validationErrorMessage = "Your Montly Expenditure cannot be greater than your monthly income.";
+        this.processing = false;
+    }else if(validationMonthly<(+financialInfoForm.monthlyExpenditure + +validationPeriodic)){
+        this.validationErrorMessage = "Summation of your periodic investments and monthly expenditure cannot be greater than your monthly income.";
+        this.processing = false;
+    }else if(financialInfoForm.yearlyIncome<(+(financialInfoForm.monthlyExpenditure*12) + +(validationPeriodic*12) +        +financialInfoForm.investmentsUnder80C)){
+        this.validationErrorMessage = "Summation of your investment, investments under 80 C and expenditure cannot be greater than your yearly income.";
+        this.processing = false;
+    }else{
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        this.http.post('http://localhost:3500/fi/financialInformation', JSON.stringify(this.financialInformation), {headers: headers})
+            .toPromise()
+            .then(res => {
+                if(200 == res.status){
+                    this.router.navigate(['/users']);
+                }
+            })
+            .catch();
+    }
+  }
 
+  ngOnInit(){
+    this.userProfile = this.auth.getUserProfile();
   }
 }

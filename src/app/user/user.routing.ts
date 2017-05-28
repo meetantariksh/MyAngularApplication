@@ -6,6 +6,12 @@ import { AuthGuard } from '../security/authGaurd.component';
 import { WelcomeComponent } from './welcome.component';
 import { UserHomeComponent } from './userHome/userHome.component';
 import { UserProfileComponent } from './profile/profile.component'; 
+import { CapitalMarketComponent } from './capitalMarket/capitalMarket.component';
+import { FinancialInformationComponent } from './financialInformation/financialInformation';
+import { MutualFundsComponent } from './mutualFunds/mutualFunds.components';
+import { InsuranceComponent } from './insurance/insurance.component';
+import { GovernmentBondComponent } from './governmentBonds/governmentBonds.component';
+import { StockMarketComponent } from './stockMarket/stockMarket.component';
 
 const userRoutes: Routes = [
   {
@@ -21,6 +27,36 @@ const userRoutes: Routes = [
       {
         path: 'profile',
         component: UserProfileComponent,
+        canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'capitalMarket',
+        component: CapitalMarketComponent,
+        canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'financialInformation',
+        component: FinancialInformationComponent,
+        canActivateChild: [AuthGuard]
+      },
+       {
+        path: 'stockMarket',
+        component: StockMarketComponent,
+        canActivateChild: [AuthGuard]
+      },
+       {
+        path: 'governmentBonds',
+        component: GovernmentBondComponent,
+        canActivateChild: [AuthGuard]
+      },
+       {
+        path: 'insurance',
+        component: InsuranceComponent,
+        canActivateChild: [AuthGuard]
+      },
+       {
+        path: 'mutualFunds',
+        component: MutualFundsComponent,
         canActivateChild: [AuthGuard]
       }
     ]

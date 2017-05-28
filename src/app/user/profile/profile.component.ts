@@ -11,12 +11,12 @@ import { UserProfile } from '../../beans/userProfile';
     }
 )
 
-export class UserProfileComponent{
+export class UserProfileComponent implements OnInit{
     userProfile: UserProfile;
-    getUserProfile(): UserProfile{
-        this.userProfile = this.authenticationService.getUserProfile();
-        return this.userProfile;
-    }
     constructor(private authenticationService: Auth){
+    }
+
+    ngOnInit(){
+        this.userProfile = this.authenticationService.getUserProfile();
     }
 }

@@ -1,6 +1,7 @@
 export class UserProfile{
     constructor(
         public userID: string,
+        public fullUserId: string,
         public firstName: string,
         public lastName: string,
         public numberOfLogins: string,

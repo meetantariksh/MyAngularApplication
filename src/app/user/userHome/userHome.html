@@ -1,3 +1,114 @@
-<div *ngIf="getUserProfile()" style="text-align: center">
+<div *ngIf="userProfile; else loading" style="text-align: center">
         <h1> Welcome, {{userProfile.firstName}}</h1>
+        <h2> Your Financial Summary </h2>
+        <h4> For more details please navigate to the Financial Information Tab from the side bar. </h4>
+        <h5> (Please note that the below information does not take into account, your tax information. For your tax details please visit Financial Information Tab from the side bar.) </h5>
+        <br>
+        <br>
+        <div *ngIf="financialInformation; else loading" style="text-align: center">
+            <div style="display: flex">
+                <div style="display: block; width: 100%; text-align: center">
+                    <div style="display: block; width: 30%; margin: 0 auto">
+                        <canvas baseChart
+                                [data]="pieChartData"
+                                [labels]="pieChartLabels"
+                                [chartType]="pieChartType"
+                                [options]="pieChartOptions"
+                                (chartHover)="chartHovered($event)"
+                                (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                    <div style="display: block; width: 50%; margin: 0 auto">
+                        <table class="table table-striped table-hover ">
+                            <thead>
+                                <tr>
+                                <th>Asset/Libility Type</th>
+                                <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Total Savings Per Month</td>
+                                    <td>{{totalSavingsPerMonth}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Expenditure Per Month</td>
+                                    <td>{{financialInformation.monthlyExpenditure}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Accumulaing Liquid Asset Per Month</td>
+                                    <td>{{leftAsset}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+                <br>
+                <br> 
+            <div style="display: flex">
+                    <div style="display: block; width: 25%; margin: 0 auto">
+                        <canvas baseChart
+                                    [data]="doughnutChartData"
+                                    [labels]="doughnutChartLabels"
+                                    [chartType]="doughnutChartType"
+                                    [options]="doughnutChartOptions"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)">
+                        </canvas>
+                        <div style="display: block; width: 100%; margin: 0 auto">
+                            <table class="table table-striped table-hover ">
+                                <thead>
+                                    <tr>
+                                    <th>Periodic Investment Type</th>
+                                    <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let periodicIns of financialInformation.periodicInvestmentList">
+                                        <td>{{periodicIns.periodicInvestmentType}}</td>
+                                        <td>{{periodicIns.periodicInvestmentAmmount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div style="display: block; width: 25%; margin: 0 auto">
+                        <canvas baseChart
+                                [data]="polarAreaChartData"
+                                [labels]="polarAreaChartLabels"
+                                [legend]="polarAreaLegend"
+                                [chartType]="polarAreaChartType"
+                                [options]="polarAreaChartOptions"
+                                (chartHover)="chartHovered($event)"
+                                (chartClick)="chartClicked($event)">
+                        </canvas>
+                        <div style="display: block; width: 100%; margin: 0 auto">
+                            <table class="table table-striped table-hover ">
+                                <thead>
+                                    <tr>
+                                    <th>Static Investment Type</th>
+                                    <th>Value</th>
+                                    </tr>
+                                </thead>
+                                 <tbody>
+                                    <tr *ngFor="let staticIns of financialInformation.staticInvestmentList">
+                                        <td>{{staticIns.staticInvestmentType}}</td>
+                                        <td>{{staticIns.staticInvestmentAmmount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
 </div>
+
+<ng-template #loading>
+    <div style="text-align: center">
+        <img src="/assets/images/load2.gif">
+    </div>
+</ng-template>
+

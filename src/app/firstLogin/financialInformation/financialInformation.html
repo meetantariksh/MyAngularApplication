@@ -40,6 +40,13 @@
             {{ formErrors.monthlyExpenditure }}
             </div>
         </div>
+
+        <div class="form-group">
+            <label for="investmentsUnder80C" class="col-lg-2 control-label">Investments Under 80C Per Year(Tax Savings Scheme)</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="investmentsUnder80C" formControlName="investmentsUnder80C" placeholder="123456">
+            </div>
+        </div>
         
         <div class="form-group">
         <label class="col-lg-2 control-label">Do you have any Static Investments Made? (Static investments include all your one time investments such as property, ontime Mutual Funds, Fixed Deposits etc.)</label>
@@ -61,7 +68,7 @@
 
         <div *ngIf="financilaInformationForm.value.isStaticInvestment == 'true'">
             <div formArrayName="staticInvestmentList">
-                <div *ngFor="let staticInvestment of staticInvestmentList.controls; let i=index" [formGroupName]="static-i" >
+                <div *ngFor="let staticInvestment of staticInvestmentList.controls; let i=index" [formGroupName]="i" >
                     <h4>Static Investment #{{i+1}}</h4>
                     <div class="form-group">
                         <label for="staticInvestmentType" class="col-lg-2 control-label">Static Investment Type</label>
@@ -110,7 +117,7 @@
 
          <div *ngIf="financilaInformationForm.value.isPeriodicInvestment == 'true'">
             <div formArrayName="periodicInvestmentList">
-                <div *ngFor="let periodicInvestment of periodicInvestmentList.controls; let i=index" [formGroupName]="periodic-i" >
+                <div *ngFor="let periodicInvestment of periodicInvestmentList.controls; let i=index" [formGroupName]="i" >
                     <h4>Periodic Investment #{{i+1}}</h4>
                     <div class="form-group">
                         <label for="periodicInvestmentType" class="col-lg-2 control-label">Periodic Investment Type</label>
@@ -138,9 +145,14 @@
             </div>
         </div>
 
+         <div *ngIf="validationErrorMessage" class="alert alert-danger">
+                <strong>{{ validationErrorMessage }}</strong>
+        </div>
+
         <div class="form-group">
             <div class="col-lg-10 col-lg-offset-2">
-                <button [disabled]="!financilaInformationForm.valid" type="submit" class="btn btn-primary">Continue</button>
+                <button *ngIf="!processing" [disabled]="!financilaInformationForm.valid" type="submit" class="btn btn-primary">Continue</button>
+                <button *ngIf="processing" disabled=true  class="btn btn-primary">Please Wait</button>
             </div>
         </div>
 
