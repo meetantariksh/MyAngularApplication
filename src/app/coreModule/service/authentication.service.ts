@@ -10,10 +10,20 @@ import 'rxjs/add/operator/map';
 import { UserProfile } from '../../beans/userProfile';
 let Auth0Lock = require('auth0-lock').default;
 
+var options = {
+  theme: {
+        logo: '../../../assets/images/logo.png',
+        primaryColor: '#317eac',
+    },
+    languageDictionary: {
+      title: "Lets Begin.."
+  },
+};
+
 @Injectable()
 export class Auth{
   userProfile: UserProfile;
-  lock = new Auth0Lock('byFqzrqX6KOrsuL3JuSn27U7GZqSreO6', 'meetantariksh.auth0.com', {});
+  lock = new Auth0Lock('byFqzrqX6KOrsuL3JuSn27U7GZqSreO6', 'meetantariksh.auth0.com', options);
   constructor(private router:Router, private authHttp: AuthHttp) {
     this.lock.on("authenticated", (authResult) => {
       if(localStorage.getItem('id_token')){
