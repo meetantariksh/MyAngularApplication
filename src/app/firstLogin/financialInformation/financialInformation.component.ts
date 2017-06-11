@@ -228,7 +228,7 @@ export class FinancialInformationComponent implements OnInit{
     }else{
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        this.http.post('http://localhost:3500/fi/financialInformation', JSON.stringify(this.financialInformation), {headers: headers})
+        this.http.post('http://ec2-35-154-170-164.ap-south-1.compute.amazonaws.com/fi/financialInformation', JSON.stringify(this.financialInformation), {headers: headers})
             .toPromise()
             .then(res => {
                 if(200 == res.status){

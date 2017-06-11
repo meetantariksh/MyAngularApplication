@@ -22,7 +22,7 @@ export class FinancialInformationService{
     }
 
     getFinancialInfo(userID: String): Observable<FianacialInformation>{
-        var url = 'http://localhost:3500/fi/financialInformation/'+userID;
+        var url = 'http://ec2-35-154-170-164.ap-south-1.compute.amazonaws.com/fi/financialInformation/'+userID;
         this.http.get(url).map(response => response.json());
         return this.http.get(url).map(response => response.json());
     }
