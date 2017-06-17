@@ -13,8 +13,8 @@ import { UserProfile } from '../../beans/userProfile';
     }
 )
 
-export class ProfileInfoComponent implements OnInit{
-    userProfile: UserProfile = this.authenticationService.getUserProfile();
+export class ProfileInfoComponent{
+    userProfile: UserProfile = JSON.parse(localStorage.getItem('UserProfile'));
     constructor(private authenticationService: Auth,
         private fb: FormBuilder,
         private router: Router){
@@ -45,10 +45,6 @@ export class ProfileInfoComponent implements OnInit{
         this.authenticationService.updateUserProfile(this.userProfile);
 
         this.router.navigate(['/userSetup/financialInformation']);
-    }
-
-    ngOnInit(){
-        console.log(this.userProfile.firstName);
     }
 
     onValueChanged(data?: any){

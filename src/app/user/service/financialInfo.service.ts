@@ -12,6 +12,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
+import { backend } from '../../props/serverProps';
+
 @Injectable()
 export class FinancialInformationService{
     financialInfo: FianacialInformation;
@@ -22,7 +24,7 @@ export class FinancialInformationService{
     }
 
     getFinancialInfo(userID: String): Observable<FianacialInformation>{
-        var url = 'http://ec2-35-154-166-90.ap-south-1.compute.amazonaws.com/fi/financialInformation/'+userID;
+        var url = backend+'fi/financialInformation/'+userID;
         this.http.get(url).map(response => response.json());
         return this.http.get(url).map(response => response.json());
     }

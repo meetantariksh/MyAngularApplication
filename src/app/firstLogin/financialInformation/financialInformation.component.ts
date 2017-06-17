@@ -9,6 +9,8 @@ import { FianacialInformation } from '../../beans/financialInformation';
 import { UserProfile } from '../../beans/userProfile';
 import { Auth } from '../../coreModule/service/authentication.service';
 
+import { backend } from '../../props/serverProps';
+
 import 'rxjs/add/operator/toPromise';
 
 @Component({
@@ -228,7 +230,7 @@ export class FinancialInformationComponent implements OnInit{
     }else{
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        this.http.post('http://ec2-35-154-166-90.ap-south-1.compute.amazonaws.com/fi/financialInformation', JSON.stringify(this.financialInformation), {headers: headers})
+        this.http.post(backend+'fi/financialInformation', JSON.stringify(this.financialInformation), {headers: headers})
             .toPromise()
             .then(res => {
                 if(200 == res.status){

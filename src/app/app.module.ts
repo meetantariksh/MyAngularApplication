@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { LoadUserComponent } from './loadUser/loadUser.component';
 import { Error404Component } from './error/error404.component';
 
 import { ApplicationRoutes } from './appRouting/routing.component';
@@ -16,6 +17,7 @@ import { AuthGuard } from './security/authGaurd.component';
   declarations: [
     AppComponent,
     HomeComponent,
+    LoadUserComponent,
     Error404Component
   ],
   imports: [

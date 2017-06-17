@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from '../home/home.component';
+import { LoadUserComponent } from '../loadUser/loadUser.component';
 
 import { AuthGuard } from '../security/authGaurd.component';
 
@@ -9,6 +10,11 @@ const applicationRoutes: Routes = [
     {
         path: 'home',
         component: HomeComponent
+    },
+    {
+        path: 'load',
+        component: LoadUserComponent,
+        canLoad: [AuthGuard]
     },
     {
         path: 'users',
@@ -26,8 +32,7 @@ const applicationRoutes: Routes = [
     },
     {
         path: '',
-        redirectTo: '/home',
-        pathMatch: 'full'
+        component: HomeComponent
     }
 ]
 

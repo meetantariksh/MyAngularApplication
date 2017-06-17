@@ -34,7 +34,9 @@ export class Auth{
         if(error){
           throw new error;
         }
-        this.setUserProfile(profile);
+        localStorage.setItem('UserProfile', JSON.stringify(profile));
+        this.router.navigate(['/load']);
+        //this.setUserProfile(profile);
       });
     });
   }
@@ -98,6 +100,7 @@ export class Auth{
       .get('https://' + 'meetantariksh.auth0.com' + '/api/v2/users/' + this.userProfile.fullUserId).map(response => response.json())
       .subscribe(
         response => {
+          console.log(response);
           this.userProfile.lastLogin = response.last_login;
           this.userProfile.numberOfLogins = response.logins_count;
           localStorage.setItem('UserProfile', JSON.stringify(this.userProfile));
