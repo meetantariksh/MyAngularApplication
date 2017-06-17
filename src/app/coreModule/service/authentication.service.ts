@@ -28,6 +28,7 @@ export class Auth{
     this.lock.on("authenticated", (authResult) => {
       if(localStorage.getItem('id_token')){
         localStorage.removeItem('id_token');
+        localStorage.removeItem('UserProfile');
       }
       localStorage.setItem('id_token', authResult.idToken);
       this.lock.getProfile(authResult.idToken, (error:any, profile:any) => {
@@ -52,6 +53,7 @@ export class Auth{
 
   public logout() {
     localStorage.removeItem('id_token');
+    localStorage.removeItem('UserProfile');
   }
 
   public getUserProfile():UserProfile{

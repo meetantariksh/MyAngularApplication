@@ -21,7 +21,7 @@ export class TitleBar implements OnInit{
     ){}
 
     public isLoggedOn(): string{
-        this.userProfile = this.auth.getUserProfile();
+        this.userProfile = JSON.parse(localStorage.getItem('UserProfile'));
         if(this.userProfile){
             return this.userProfile.lastName+', '+this.userProfile.firstName;
         }else{
@@ -38,8 +38,6 @@ export class TitleBar implements OnInit{
     }
 
     ngOnInit(){
-        if(this.auth.authenticated() && !this.auth.getUserProfile()){
-            this.auth.resetUserProfile();
-        }
+        
     }
 }

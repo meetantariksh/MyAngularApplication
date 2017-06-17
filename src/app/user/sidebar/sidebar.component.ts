@@ -13,7 +13,7 @@ import { Auth } from '../../coreModule/service/authentication.service';
 export class UserSideBar{
     userProfile: UserProfile;
     getUserProfile(): UserProfile{
-        this.userProfile = this.authenticationService.getUserProfile();
+        this.userProfile = JSON.parse(localStorage.getItem('UserProfile'));
         return this.userProfile;
     }
     constructor(private authenticationService: Auth){
