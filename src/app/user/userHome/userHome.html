@@ -48,8 +48,7 @@
                 <br>
                 
             <div style="display: flex">
-                <div *ngIf="financialInformation.isPeriodicInvestment == 'true'"> 
-                    <div style="display: block; width: 25%; margin: 0 auto">
+                    <div *ngIf="financialInformation.isPeriodicInvestment == 'true'" style="display: block; width: 25%; margin: 0 auto">
                         <canvas baseChart
                                     [data]="doughnutChartData"
                                     [labels]="doughnutChartLabels"
@@ -75,9 +74,7 @@
                             </table>
                         </div>
                     </div>
-                </div>
-                <div *ngIf="financialInformation.isStaticInvestment == 'true'"> 
-                    <div style="display: block; width: 25%; margin: 0 auto">
+                    <div  *ngIf="financialInformation.isStaticInvestment == 'true'" style="display: block; width: 25%; margin: 0 auto">
                         <canvas baseChart
                                 [data]="polarAreaChartData"
                                 [labels]="polarAreaChartLabels"
@@ -104,7 +101,6 @@
                             </table>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
 

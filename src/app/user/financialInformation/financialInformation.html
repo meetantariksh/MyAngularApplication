@@ -87,7 +87,7 @@
         <div style="text-align: center; width: 100%; margin: 0 auto;">
                 <h4><u><b>Your Savings</b></u></h4>
                 <br>
-                <div *ngIf="financialInformation.isPeriodicInvestment == 'true' && inancialInformation.isStaticInvestment == 'true'; else noSavings">
+                <div *ngIf="financialInformation.isPeriodicInvestment == 'true' && financialInformation.isStaticInvestment == 'true'; else noSavings">
                     <div style="display: flex">
                             <div *ngIf="financialInformation.isPeriodicInvestment == 'true'" style="display: block; width: 25%; margin: 0 auto">
                                 <canvas baseChart

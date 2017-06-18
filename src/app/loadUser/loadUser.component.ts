@@ -35,7 +35,6 @@ export class LoadUserComponent implements AfterContentInit{
         .get('https://' + 'meetantariksh.auth0.com' + '/api/v2/users/' + temp.user_id).map(response => response.json())
         .subscribe(
             response => {
-            console.log(response);
             this.setUserProfile(response);
             },
             error => console.log(error.json().message)
@@ -73,7 +72,6 @@ export class LoadUserComponent implements AfterContentInit{
         var temp  = (profile.user_id).split('|');
         this.userProfile.userID = temp[1];
         this.userProfile.userImageUrl = profile.picture;
-        console.log(JSON.stringify(this.userProfile));
         localStorage.setItem('UserProfile', JSON.stringify(this.userProfile));
         if("1"==this.userProfile.numberOfLogins){
             this.router.navigate(['/userSetup']);

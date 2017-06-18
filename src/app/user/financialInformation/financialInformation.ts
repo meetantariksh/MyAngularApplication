@@ -184,7 +184,7 @@ export class FinancialInformationComponent implements OnInit{
     loadFinancialInformation(){
         this.financialInfo.getFinancialInfo(this.userProfile.userID)
                 .subscribe(financialInformation => {
-                    
+                    this.financialInformation = financialInformation;
                     this.monthlyIncome = (+financialInformation.yearlyIncome/12);
 
                     for(let i=0; i<financialInformation.periodicInvestmentList.length; i++){
