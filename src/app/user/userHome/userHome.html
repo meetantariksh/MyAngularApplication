@@ -45,8 +45,10 @@
                 </div>
             </div>
                 <br>
-                <br> 
+                <br>
+                
             <div style="display: flex">
+                <div *ngIf="financialInformation.isPeriodicInvestment == 'true'"> 
                     <div style="display: block; width: 25%; margin: 0 auto">
                         <canvas baseChart
                                     [data]="doughnutChartData"
@@ -73,7 +75,8 @@
                             </table>
                         </div>
                     </div>
-
+                </div>
+                <div *ngIf="financialInformation.isStaticInvestment == 'true'"> 
                     <div style="display: block; width: 25%; margin: 0 auto">
                         <canvas baseChart
                                 [data]="polarAreaChartData"
@@ -101,6 +104,7 @@
                             </table>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
 

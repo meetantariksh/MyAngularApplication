@@ -117,6 +117,7 @@ export class UserHomeComponent implements OnInit{ //implements OnInit
        this.financialInfo.getFinancialInfo(this.userProfile.userID)
                 .subscribe(financialInformation => {
                     this.financialInformation = financialInformation;
+                    console.log(JSON.stringify(financialInformation));
                     for(let i=0; i<financialInformation.periodicInvestmentList.length; i++){
                         if(this.doughnutChartLabels){
                             this.doughnutChartLabels.push(financialInformation.periodicInvestmentList[i].periodicInvestmentType);

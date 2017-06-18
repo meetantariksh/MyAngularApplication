@@ -245,11 +245,20 @@ export class FinancialInformationComponent implements OnInit{
 
                     this.pieChartData = [this.totalSavingsPerMonth, financialInformation.monthlyExpenditure, this.leftAsset, this.taxPerMonth];
 
-                    this.pieChartLabelsTotalYearlySavings.push("Total Accumulating Liquid Asset");
-                    this.pieChartDataTotalYearlySavings.push(this.leftAsset*12);
+                    if(this.pieChartLabelsTotalYearlySavings){
+                        this.pieChartLabelsTotalYearlySavings.push("Total Accumulating Liquid Asset");
+                        this.pieChartDataTotalYearlySavings.push(this.leftAsset*12);
+                    }else{
+                        this.pieChartLabelsTotalYearlySavings = new Array<string>();
+                        this.pieChartDataTotalYearlySavings = new Array<number>();
 
-                    this.pieChartLabelsTotalYearlySavings.push("Investments Under 80 C");
-                    this.pieChartDataTotalYearlySavings.push(financialInformation.investmentsUnder80C);
+                        this.pieChartLabelsTotalYearlySavings.push("Total Accumulating Liquid Asset");
+                        this.pieChartDataTotalYearlySavings.push(this.leftAsset*12);
+                    }
+                    if(financialInformation.investmentsUnder80C){
+                        this.pieChartLabelsTotalYearlySavings.push("Investments Under 80 C");
+                        this.pieChartDataTotalYearlySavings.push(financialInformation.investmentsUnder80C);
+                    }
 
                     this.incomePerMonthAfterTax = +this.monthlyIncome - +this.taxPerMonth;
                     this.totalSavingsPerMonthPercentage = (+this.totalSavingsPerMonth/+this.incomePerMonthAfterTax)*100;
