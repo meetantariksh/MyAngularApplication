@@ -1,0 +1,57 @@
+<div style="text-align: center">
+    <h2> Mutual Fund Information </h2>
+    <h4> To search for a particular mutual fund, please provide the name or part of the name of the fund you want to view and click on search. </h4>
+    <br>
+    <br>
+    <div>
+        <label>Mutual Fund Name: </label>
+        <input [(ngModel)]="fundSearchName" placeholder="Fund Name">
+        <a (click)="onSearchClick()" ng-disabled="buttonEnabled" class="btn btn-default">{{buttonVal}}</a>
+        <br>
+        <div *ngIf="nameError" class="alert alert-danger">
+          <p>Please provide a name for the fund you want to look up</p>
+        </div>
+        <div *ngIf="nameLengthError" class="alert alert-danger">
+          <p>Fund name should have a minimum of 3 charecters.</p>
+        </div>
+        <div *ngIf="noResult" class="alert alert-danger">
+          <p>We could not find any funds with that name.</p>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div *ngIf="mutualFundsSearchList && !noResult && listDisplay" style="display: block; width: 50%; margin: 0 auto">
+        <h5> Click on the fund for nav values. </h5>
+        <br>
+        <div *ngFor="let fnds of mutualFundsSearchList" class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{fnds.name}}</h3>
+            </div>
+            <div class="panel-body">
+                <p><b>Fund AMC: </b>{{fnds.amc}}</p>
+                <p><b>Fund Scheme Type: </b>{{fnds.scheme_type}}</p>
+                <p><b>Fund Scheme Group: </b>{{fnds.scheme_group}}</p>
+                <p><b>Fund ISIN Division: </b>{{fnds.isin_div}}</p>
+                <p><b>Fund ISIN Growth: </b>{{fnds.isin_growth}}</p>
+                <a (click)="getNav(fnds)" class="btn btn-default btn-lg btn-block">Get NAV</a>
+            </div>
+        </div>
+    </div>
+
+     <div *ngIf="mfAllData && displayNav" style="display: block; width: 60%; margin: 0 auto" class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{mfAllData.name}}</h3>
+        </div>
+        <div class="panel-body">
+            <p><b>Fund AMC: </b>{{mfAllData.amc}}</p>
+            <p><b>Fund Scheme Type: </b>{{mfAllData.scheme_type}}</p>
+            <p><b>Fund Scheme Group: </b>{{mfAllData.scheme_group}}</p>
+            <p><b>Fund ISIN Division: </b>{{mfAllData.isin_div}}</p>
+            <p><b>Fund ISIN Growth: </b>{{mfAllData.isin_growth}}</p>
+            <br>
+            <h4>Fund SCode: <b>{{mfAllData.scode}}</b></h4>
+            <h4>As of Date(yyyy-mm-dd): <b>{{mfAllData.date}}</b></h4>
+            <h3>Fund NAV: <b>{{mfAllData.nav}}</b></h3>
+        </div>
+    </div>
+</div>

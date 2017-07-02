@@ -1,5 +1,6 @@
 import { NgModule }       from '@angular/core';
 import { CommonModule }   from '@angular/common';
+import { FormsModule }   from '@angular/forms';
 
 import { WelcomeComponent } from './welcome.component';
 import { UserSideBar } from './sidebar/sidebar.component';
@@ -11,8 +12,10 @@ import { MutualFundsComponent } from './mutualFunds/mutualFunds.components';
 import { InsuranceComponent } from './insurance/insurance.component';
 import { GovernmentBondComponent } from './governmentBonds/governmentBonds.component';
 import { StockMarketComponent } from './stockMarket/stockMarket.component';
+import { MutualFundInfoComponent } from './mutualFundInfo/mutualFundInfo.component';
 
 import { FinancialInformationService } from './service/financialInfo.service'; 
+import { MutualFundsInfoService } from './service/mutualFundsInfo.service'; 
 
 import { UserRoutingModule }       from './user.routing';
 
@@ -22,10 +25,12 @@ import { ChartsModule } from 'ng2-charts';
   imports: [
     CommonModule,
     ChartsModule,
+    FormsModule,
     UserRoutingModule
   ],
   providers: [
-    FinancialInformationService
+    FinancialInformationService,
+    MutualFundsInfoService
   ],
   declarations: [
     WelcomeComponent,
@@ -37,7 +42,8 @@ import { ChartsModule } from 'ng2-charts';
     MutualFundsComponent,
     InsuranceComponent,
     GovernmentBondComponent,
-    StockMarketComponent
+    StockMarketComponent,
+    MutualFundInfoComponent
   ]
 })
 export class UserModule {}
