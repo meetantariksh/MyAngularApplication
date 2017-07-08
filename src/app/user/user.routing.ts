@@ -13,6 +13,7 @@ import { InsuranceComponent } from './insurance/insurance.component';
 import { GovernmentBondComponent } from './governmentBonds/governmentBonds.component';
 import { StockMarketComponent } from './stockMarket/stockMarket.component';
 import { MutualFundInfoComponent } from './mutualFundInfo/mutualFundInfo.component';
+import { NewsComponent } from './news/news.component';
 
 const userRoutes: Routes = [
   {
@@ -63,6 +64,11 @@ const userRoutes: Routes = [
       {
         path: 'mutualFundInfo',
         component: MutualFundInfoComponent,
+        canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'globalNews',
+        component: NewsComponent,
         canActivateChild: [AuthGuard]
       }
     ]

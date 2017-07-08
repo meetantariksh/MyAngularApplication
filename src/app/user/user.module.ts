@@ -13,9 +13,11 @@ import { InsuranceComponent } from './insurance/insurance.component';
 import { GovernmentBondComponent } from './governmentBonds/governmentBonds.component';
 import { StockMarketComponent } from './stockMarket/stockMarket.component';
 import { MutualFundInfoComponent } from './mutualFundInfo/mutualFundInfo.component';
+import { NewsComponent } from './news/news.component';
 
 import { FinancialInformationService } from './service/financialInfo.service'; 
 import { MutualFundsInfoService } from './service/mutualFundsInfo.service'; 
+import { NewsService } from './service/news.service'; 
 
 import { UserRoutingModule }       from './user.routing';
 
@@ -30,7 +32,8 @@ import { ChartsModule } from 'ng2-charts';
   ],
   providers: [
     FinancialInformationService,
-    MutualFundsInfoService
+    MutualFundsInfoService,
+    NewsService
   ],
   declarations: [
     WelcomeComponent,
@@ -43,7 +46,8 @@ import { ChartsModule } from 'ng2-charts';
     InsuranceComponent,
     GovernmentBondComponent,
     StockMarketComponent,
-    MutualFundInfoComponent
+    MutualFundInfoComponent,
+    NewsComponent
   ]
 })
 export class UserModule {}

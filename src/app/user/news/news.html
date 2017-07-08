@@ -1,0 +1,100 @@
+<div style="text-align: center">
+    <link href="/assets/styleSheets/news/style.css" rel="stylesheet">
+    <div *ngIf="isNewsAvailable; else notAvailble">
+        <h1>Global</h1>
+        <div *ngIf="newsGlobal; else loading">
+            <div id="secwrapper">
+                <section>
+                        <article *ngFor="let art of newsGlobal">
+                            <a href={{art.url}} target="_blank"><img src={{art.urlToImage}} alt=""/></a>
+                            <h3>{{art.title}}</h3>
+                            <p>{{art.description}}</p>
+                            <a href={{art.url}} target="_blank" class="readmore">Read more</a>
+                        </article>
+                </section>
+            </div>
+        </div>
+        <br>
+        <h1>India</h1>
+        <div *ngIf="newsIndia; else loading">
+            <div id="secwrapper">
+                <section>
+                        <article *ngFor="let art of newsIndia">
+                            <a href={{art.url}} target="_blank"><img src={{art.urlToImage}} alt=""/></a>
+                            <h3>{{art.title}}</h3>
+                            <p>{{art.description}}</p>
+                            <a href={{art.url}} target="_blank" class="readmore">Read more</a>
+                        </article>
+                </section>
+            </div>
+        </div>
+        <br>
+        <h1>Business</h1>
+        <div *ngIf="newsBusiness; else loading">
+            <div id="secwrapper">
+                <section>
+                        <article *ngFor="let art of newsBusiness">
+                            <a href={{art.url}} target="_blank"><img src={{art.urlToImage}} alt=""/></a>
+                            <h3>{{art.title}}</h3>
+                            <p>{{art.description}}</p>
+                            <a href={{art.url}} target="_blank" class="readmore">Read more</a>
+                        </article>
+                </section>
+            </div>
+        </div>
+        <br>
+        <h1>Technology</h1>
+        <div *ngIf="newsTech; else loading">
+            <div id="secwrapper">
+                <section>
+                        <article *ngFor="let art of newsTech">
+                            <a href={{art.url}} target="_blank"><img src={{art.urlToImage}} alt=""/></a>
+                            <h3>{{art.title}}</h3>
+                            <p>{{art.description}}</p>
+                            <a href={{art.url}} target="_blank" class="readmore">Read more</a>
+                        </article>
+                </section>
+            </div>
+        </div>
+        <br>
+        <h1>Sports</h1>
+        <div *ngIf="newsSports; else loading">
+            <div id="secwrapper">
+                <section>
+                        <article *ngFor="let art of newsSports">
+                            <a href={{art.url}} target="_blank"><img src={{art.urlToImage}} alt=""/></a>
+                            <h3>{{art.title}}</h3>
+                            <p>{{art.description}}</p>
+                            <a href={{art.url}} target="_blank" class="readmore">Read more</a>
+                        </article>
+                </section>
+            </div>
+        </div>
+        <br>
+        <h1>Entertainment</h1>
+        <div *ngIf="newsEntertainment; else loading">
+            <div id="secwrapper">
+                <section>
+                        <article *ngFor="let art of newsEntertainment">
+                            <a href={{art.url}} target="_blank"><img src={{art.urlToImage}} alt=""/></a>
+                            <h3>{{art.title}}</h3>
+                            <p>{{art.description}}</p>
+                            <a href={{art.url}} target="_blank" class="readmore">Read more</a>
+                        </article>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #notAvailble>
+    <div style="text-align: center">
+        <img src="/assets/images/load2.gif">
+    </div>
+</ng-template>
+
+<ng-template #loading>
+    <div style="text-align: center">
+        <img src="/assets/images/load2.gif">
+    </div>
+</ng-template>
