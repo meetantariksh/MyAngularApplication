@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { NewsService } from '../service/news.service';
 
@@ -6,13 +6,17 @@ import { News } from '../../beans/news';
 import { NavReturns } from '../../beans/navReturn';
 import { MutualFundsAllData } from '../../beans/mfAllData';
 
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
+
 @Component(
     {
         selector: 'mutualFundsInfo',
         templateUrl: 'news.html'
     }
 )
-export class NewsComponent implements OnInit{
+export class NewsComponent implements OnInit, OnDestroy{
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
     newsGlobal: News[];
     newsIndia: News[];
     newsBusiness: News[];
@@ -35,7 +39,9 @@ export class NewsComponent implements OnInit{
     }
 
     getAllNews(){
-        this.newsData.getAllNewsGlobal().subscribe(
+        this.newsData.getAllNewsGlobal()
+        .takeUntil(this.ngUnsubscribe)
+        .subscribe(
             response =>{
                 try{
                     this.newsGlobal = response.articles;
@@ -48,7 +54,9 @@ export class NewsComponent implements OnInit{
             }
         );
 
-        this.newsData.getAllNewsIndia().subscribe(
+        this.newsData.getAllNewsIndia()
+        .takeUntil(this.ngUnsubscribe)
+        .subscribe(
             response =>{
                 try{
                     this.newsIndia = response.articles;
@@ -58,7 +66,9 @@ export class NewsComponent implements OnInit{
             }
         );
 
-        this.newsData.getAllNewsTech().subscribe(
+        this.newsData.getAllNewsTech()
+        .takeUntil(this.ngUnsubscribe)
+        .subscribe(
             response =>{
                 try{
                     this.newsTech = response.articles;
@@ -68,7 +78,9 @@ export class NewsComponent implements OnInit{
             }
         );
 
-        this.newsData.getAllNewsBusiness().subscribe(
+        this.newsData.getAllNewsBusiness()
+        .takeUntil(this.ngUnsubscribe)
+        .subscribe(
             response =>{
                 try{
                     this.newsBusiness = response.articles;
@@ -78,7 +90,9 @@ export class NewsComponent implements OnInit{
             }
         );
 
-        this.newsData.getAllNewsSports().subscribe(
+        this.newsData.getAllNewsSports()
+        .takeUntil(this.ngUnsubscribe)
+        .subscribe(
             response =>{
                 try{
                     this.newsSports = response.articles;
@@ -88,7 +102,9 @@ export class NewsComponent implements OnInit{
             }
         );
 
-        this.newsData.getAllNewsEntertainment().subscribe(
+        this.newsData.getAllNewsEntertainment()
+        .takeUntil(this.ngUnsubscribe)
+        .subscribe(
             response =>{
                 try{
                     this.newsEntertainment = response.articles;
@@ -97,6 +113,11 @@ export class NewsComponent implements OnInit{
                 }
             }
         );
+    }
+
+    ngOnDestroy(){
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
     refreshNews(){

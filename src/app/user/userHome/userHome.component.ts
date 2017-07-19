@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AUTH_PROVIDERS } from 'angular2-jwt';
 
 import { Auth } from '../../coreModule/service/authentication.service';
@@ -8,6 +8,9 @@ import { FianacialInformation } from '../../beans/financialInformation';
 import { StaticInvestment } from '../../beans/staticInvestment';
 import { PeriodicInvestment } from '../../beans/periodicInvestment';
 
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
+
 @Component(
     {
         selector: 'user-home',
@@ -15,7 +18,8 @@ import { PeriodicInvestment } from '../../beans/periodicInvestment';
     }
 )
 
-export class UserHomeComponent implements OnInit{ //implements OnInit
+export class UserHomeComponent implements OnInit, OnDestroy{ //implements OnInit
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
     userProfile: UserProfile;
     financialInformation: FianacialInformation;
     staticInvestment:StaticInvestment;
@@ -115,6 +119,7 @@ export class UserHomeComponent implements OnInit{ //implements OnInit
 
     getFinancialInfo(): FianacialInformation{
        this.financialInfo.getFinancialInfo(this.userProfile.userID)
+                .takeUntil(this.ngUnsubscribe)
                 .subscribe(financialInformation => {
                     this.financialInformation = financialInformation;
                     for(let i=0; i<financialInformation.periodicInvestmentList.length; i++){
@@ -152,6 +157,11 @@ export class UserHomeComponent implements OnInit{ //implements OnInit
     ngOnInit(){
         this.userProfile = JSON.parse(localStorage.getItem('UserProfile'));
         this.getFinancialInfo();
+    }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     } 
 
 }

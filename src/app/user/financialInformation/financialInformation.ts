@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Auth } from '../../coreModule/service/authentication.service';
 import { FinancialInformationService } from '../service/financialInfo.service';
@@ -8,6 +8,9 @@ import { StaticInvestment } from '../../beans/staticInvestment';
 import { PeriodicInvestment } from '../../beans/periodicInvestment';
 import { TaxInformation } from '../../beans/taxInformation';
 
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
+
 @Component(
     {
         selector: 'financialInformation',
@@ -15,7 +18,8 @@ import { TaxInformation } from '../../beans/taxInformation';
     }
 )
 
-export class FinancialInformationComponent implements OnInit{
+export class FinancialInformationComponent implements OnInit, OnDestroy{
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
     userProfile: UserProfile;
     financialInformation: FianacialInformation;
     staticInvestments:StaticInvestment[];
@@ -183,6 +187,7 @@ export class FinancialInformationComponent implements OnInit{
 
     loadFinancialInformation(){
         this.financialInfo.getFinancialInfo(this.userProfile.userID)
+                .takeUntil(this.ngUnsubscribe)
                 .subscribe(financialInformation => {
                     this.financialInformation = financialInformation;
                     this.monthlyIncome = (+financialInformation.yearlyIncome/12);
@@ -307,4 +312,8 @@ export class FinancialInformationComponent implements OnInit{
         this.loadFinancialInformation();
     } 
 
+    ngOnDestroy(){
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
 }

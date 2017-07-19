@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { MutualFundsInfoService } from '../service/mutualFundsInfo.service';
 
@@ -6,13 +6,17 @@ import { MutualFunds } from '../../beans/mutualFunds';
 import { NavReturns } from '../../beans/navReturn';
 import { MutualFundsAllData } from '../../beans/mfAllData';
 
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
+
 @Component(
     {
         selector: 'mutualFundsInfo',
         templateUrl: 'mutualFundInfo.html'
     }
 )
-export class MutualFundInfoComponent {
+export class MutualFundInfoComponent implements OnDestroy {
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
     fundSearchName: String = '';
     nameError = false;
     mutualFundsSearchList: MutualFunds[];
@@ -41,7 +45,9 @@ export class MutualFundInfoComponent {
             this.buttonVal = 'Please Wait..';
             this.buttonEnabled = false;
             this.nameError = false;
-            this.fundInfo.getMutualFundSearch(this.fundSearchName).subscribe(
+            this.fundInfo.getMutualFundSearch(this.fundSearchName)
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
                 funds =>{
                     this.mutualFundsSearchList = funds;
                     this.buttonVal = 'Search';
@@ -55,7 +61,9 @@ export class MutualFundInfoComponent {
     }
 
     getNav(fund: MutualFunds){
-        this.fundInfo.getMutualFundNav(fund.scheme_id).subscribe(
+        this.fundInfo.getMutualFundNav(fund.scheme_id)
+        .takeUntil(this.ngUnsubscribe)
+        .subscribe(
             nav => {
                 this.mfAllData = new MutualFundsAllData(
                     fund.name,
@@ -73,5 +81,10 @@ export class MutualFundInfoComponent {
                 this.displayNav = true;
             }
         )
+    }
+
+    ngOnDestroy(){
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 }
