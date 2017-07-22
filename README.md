@@ -11,7 +11,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build. This application is built for JIT compilation only an AOT compilation is not supported. For production builds disable AOT by passing `-aot=false`.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build. This application is built for JIT compilation only and AOT compilation is not supported. For production builds disable AOT by passing `-aot=false`.
 
 ## Running unit tests
 
