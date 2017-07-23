@@ -4,7 +4,7 @@
     <br>
     <br>
     <div>
-        <label>Mutual Fund Name: </label>
+        <label>Mutual Fund Name/SCode (AMFI Code): </label>
         <input [(ngModel)]="fundSearchName" placeholder="Fund Name">
         <a (click)="onSearchClick()" ng-disabled="buttonEnabled" class="btn btn-default">{{buttonVal}}</a>
         <br>
@@ -15,7 +15,7 @@
           <p>Fund name should have a minimum of 3 charecters.</p>
         </div>
         <div *ngIf="noResult" class="alert alert-danger">
-          <p>We could not find any funds with that name.</p>
+          <p>We could not find any funds with that name/code. You can also search for the fund using AMFI Code.</p>
         </div>
     </div>
     <br>
@@ -52,6 +52,9 @@
             <h4>Fund SCode: <b>{{mfAllData.scode}}</b></h4>
             <h4>As of Date(yyyy-mm-dd): <b>{{mfAllData.date}}</b></h4>
             <h3>Fund NAV: <b>{{mfAllData.nav}}</b></h3>
+            <br>
+            <p><b>You can now register this fund with us to track your investment growth.</b></p>
+            <a (click)="registerMutualFund(mfAllData.scode)" class="btn btn-default btn-lg btn-block">Register Mutual Fund</a>
         </div>
     </div>
 </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { MutualFundsInfoService } from '../service/mutualFundsInfo.service';
 
@@ -28,8 +29,9 @@ export class MutualFundInfoComponent implements OnDestroy {
     displayNav = false;
     nameLengthError = false;
     constructor(
-     private fundInfo: MutualFundsInfoService){
-  
+     private fundInfo: MutualFundsInfoService,
+     private router: Router){
+     
     }
 
     onSearchClick(){
@@ -81,6 +83,10 @@ export class MutualFundInfoComponent implements OnDestroy {
                 this.displayNav = true;
             }
         )
+    }
+
+    registerMutualFund(scode: String){
+        this.router.navigate(['/users/registerMF', scode]);
     }
 
     ngOnDestroy(){

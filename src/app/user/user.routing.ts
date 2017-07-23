@@ -14,6 +14,7 @@ import { GovernmentBondComponent } from './governmentBonds/governmentBonds.compo
 import { StockMarketComponent } from './stockMarket/stockMarket.component';
 import { MutualFundInfoComponent } from './mutualFundInfo/mutualFundInfo.component';
 import { NewsComponent } from './news/news.component';
+import { RegisterMutualFunadComponent } from './registerMutualFund/registerMutualFund.component';
 
 const userRoutes: Routes = [
   {
@@ -69,6 +70,11 @@ const userRoutes: Routes = [
       {
         path: 'globalNews',
         component: NewsComponent,
+        canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'registerMF/:scode',
+        component: RegisterMutualFunadComponent,
         canActivateChild: [AuthGuard]
       }
     ]

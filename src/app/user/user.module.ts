@@ -14,6 +14,7 @@ import { GovernmentBondComponent } from './governmentBonds/governmentBonds.compo
 import { StockMarketComponent } from './stockMarket/stockMarket.component';
 import { MutualFundInfoComponent } from './mutualFundInfo/mutualFundInfo.component';
 import { NewsComponent } from './news/news.component';
+import { RegisterMutualFunadComponent } from './registerMutualFund/registerMutualFund.component';
 
 import { FinancialInformationService } from './service/financialInfo.service'; 
 import { MutualFundsInfoService } from './service/mutualFundsInfo.service'; 
@@ -47,7 +48,8 @@ import { ChartsModule } from 'ng2-charts';
     GovernmentBondComponent,
     StockMarketComponent,
     MutualFundInfoComponent,
-    NewsComponent
+    NewsComponent,
+    RegisterMutualFunadComponent
   ]
 })
 export class UserModule {}
